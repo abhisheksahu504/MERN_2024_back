@@ -13,10 +13,16 @@ const errorMiddleware = require("./middlewares/error-middleware");
 app.use(express.json());
 //handling cors
 const corsOptions = {
-  origin: [
-    "http://localhost:5173",
-    "https://mern-with-adminpanel.netlify.app/",
-  ],
+  // origin: "http://localhost:5173",
+  origin: (origin, callback) => {
+    // Check if the origin is allowed
+    const allowedOrigins = [
+      "http://localhost:5173",
+      "https://mern-with-adminpanel.netlify.app",
+    ];
+    const isAllowed = allowedOrigins.includes(origin);
+    callback(null, isAllowed ? origin : false);
+  },
   methods: "GET, POST, PUT, DELETE, PATCH, HEAD",
   credentials: true,
 };
